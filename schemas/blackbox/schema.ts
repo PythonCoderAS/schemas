@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { LiteralUnion } from "../../common/utils.js";
 
-const Duration = Type.RegExp(/[0-9]+(ms|[smhdwy])/);
+const Duration = Type.String({ pattern: "[0-9]+(ms|[smhdwy])" });
 
 const HTTPHeaderMatchSpec = Type.Object({
   header: Type.String(),
