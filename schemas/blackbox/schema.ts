@@ -64,9 +64,11 @@ const HTTPProber = Type.Object({
   proxy_url: Type.Optional(Type.String()),
   no_proxy: Type.Optional(Type.String()),
   proxy_from_environment: Type.Optional(Type.Boolean()),
-  proxy_connect_header: Type.Record(Type.String(), Type.Array(Type.String())),
+  proxy_connect_header: Type.Optional(
+    Type.Record(Type.String(), Type.Array(Type.String()))
+  ),
   skip_resolve_phase_with_proxy: Type.Optional(Type.Boolean()),
-  oauth2: OAuth2,
+  oauth2: Type.Optional(OAuth2),
   enable_http2: Type.Optional(Type.Boolean()),
   preferred_ip_protocol: Type.Optional(LiteralUnion("ip4", "ip6")),
   ip_protocol_fallback: Type.Optional(Type.Boolean()),
