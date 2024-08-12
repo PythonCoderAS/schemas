@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "@sinclair/typebox": "^0.33.4"
+  },
+  "name": "schemas",
+  "version": "1.0.0",
+  "description": "JSON Schemas",
+  "main": "dist/generate-schemas.js",
+  "devDependencies": {
+    "@types/node": "^22.2.0",
+    "typescript": "^5.5.4"
+  },
+  "type": "module",
+  "scripts": {
+    "run": "node dist/generate-schemas.js",
+    "build-and-run": "tsc -b && npm run run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PythonCoderAS/schemas.git"
+  },
+  "keywords": [
+    "schemas",
+    "json"
+  ],
+  "author": "PythonCoderAS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PythonCoderAS/schemas/issues"
+  },
+  "homepage": "https://github.com/PythonCoderAS/schemas#readme"
+}
