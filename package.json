@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@sinclair/typebox": "^0.33.4"
+    "@sinclair/typebox": "^0.33.4",
+    "jsonschema": "^1.4.1"
   },
   "name": "schemas",
   "version": "1.0.0",

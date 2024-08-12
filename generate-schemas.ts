@@ -1,7 +1,9 @@
 import { type TSchema } from "@sinclair/typebox";
+import { Schema, Validator } from "jsonschema";
 import { Dir } from "node:fs";
 import { opendir, mkdir, writeFile } from "node:fs/promises";
 import { basename, dirname } from "node:path";
+import jsonSchema from "./json-schema.json" with { type: "json" };
 
 interface DirEntry {
   path: string;
@@ -27,6 +29,7 @@ async function* walk(startDirectory: string): AsyncGenerator<DirEntry> {
 }
 
 async function main() {
+  const validator = new Validator();
   for await (const { path } of walk(`${currentFileDir}/schemas`)) {
     const pathBaseName = basename(path);
     if (pathBaseName === "schema.js") {
@@ -35,17 +38,21 @@ async function main() {
       await mkdir(`${schemaOutDir}/${outDir}`, { recursive: true });
       const schema: TSchema = (await import(`./schemas/${outPath}`)).default;
       const title = outDir.replace("/schema.js", "");
-      const schemaStr = JSON.stringify(
-        {
-          $schema: "http://json-schema.org/draft-07/schema",
-          $id: `https://pythoncoderas.github.io/schemas/${outDir}/schema.json`,
-          title,
-          description: `Schema for ${title}`,
-          ...schema,
-        },
-        null,
-        2
-      );
+      const extendedSchema = {
+        $schema: "http://json-schema.org/draft-07/schema#",
+        $id: `https://pythoncoderas.github.io/schemas/${outDir}/schema.json`,
+        title,
+        description: `Schema for ${title}`,
+        ...schema,
+      };
+      // TODO: Fix this once upstream fixes their types
+      if (
+        !validator.validate(extendedSchema, jsonSchema as unknown as Schema)
+          .valid
+      ) {
+        throw new Error(`Schema for ${outPath} is invalid.`);
+      }
+      const schemaStr = JSON.stringify(extendedSchema, null, 2);
       await writeFile(`${schemaOutDir}/${outDir}/schema.json`, schemaStr);
     }
   }
