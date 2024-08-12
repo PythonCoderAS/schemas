@@ -34,8 +34,15 @@ async function main() {
       const outDir = dirname(outPath);
       await mkdir(`${schemaOutDir}/${outDir}`, { recursive: true });
       const schema: TSchema = (await import(`./schemas/${outPath}`)).default;
+      const title = outDir.replace("/schema.js", "");
       const schemaStr = JSON.stringify(
-        { $schema: "http://json-schema.org/draft-07/schema", ...schema },
+        {
+          $schema: "http://json-schema.org/draft-07/schema",
+          $id: `https://pythoncoderas.github.io/schemas/${outDir}/schema.json`,
+          title,
+          description: `Schema for ${title}`,
+          ...schema,
+        },
         null,
         2
       );
